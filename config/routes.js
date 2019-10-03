@@ -1,3 +1,6 @@
+const path = require('path');
+const serveStatic = require('serve-static');
+
 /**
  * Route Mappings
  * (sails.config.routes)
@@ -20,6 +23,15 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': { view: 'pages/homepage' },
+  'get /uploads/*': { 
+    skipAssets: false,
+    fn: [
+      serveStatic(path.resolve(__dirname, '../'), {
+        maxAge: process.env.NODE_ENV !== 'production' ? 1 : 30000,
+        etag: false
+      }),
+    ]
+  }
 
 
   /***************************************************************************
